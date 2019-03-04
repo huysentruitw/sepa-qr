@@ -1,6 +1,6 @@
 ﻿namespace SepaQr
 {
-    public sealed class SepaQrCode
+    public sealed class SepaQrCodeDefaults
     {
         public const string DefaultServiceTag = "BCD";
 
