@@ -4,7 +4,7 @@
     {
         public const string DefaultServiceTag = "BCD";
 
-        public const string DefaultVersion = "002";
+        public const int DefaultVersion = 2;
 
         public const CharacterSet DefaultCharacterSet = CharacterSet.UTF8;
 
