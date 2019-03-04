@@ -562,5 +562,37 @@ namespace SepaQr.Tests
             // Assert
             code.Information.Should().BeNull();
         }
+
+        [Fact]
+        public void GetQrContent_ValidCode_ShouldReturnCorrectString()
+        {
+            // Arrange
+            var expectedContent = @"BCD
+002
+1
+SCT
+GKCCBEBB
+Rode Kruis Vlaanderen
+BE28096000009620
+EUR1.00
+
+
+Happy to donate
+
+".Replace(Environment.NewLine, "\n");
+            var code = new SepaQrCode();
+            code.SetName("Rode Kruis Vlaanderen");
+            code.SetBic("GKCCBEBB");
+            code.SetAccountNumber("BE28096000009620");
+            code.SetAmount(1);
+            code.SetUnstructuredRemittanceInformation("Happy to donate");
+
+            // Act
+            var content = code.GetQrContent();
+
+            // Assert
+            content.Should().NotBeNull();
+            content.Should().Be(expectedContent);
+        }
     }
 }

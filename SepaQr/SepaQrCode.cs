@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Text;
 
 namespace SepaQr
 {
@@ -236,6 +238,43 @@ namespace SepaQr
         {
             Information = null;
             return this;
+        }
+
+        /// <summary>
+        /// Gets the QR content.
+        /// </summary>
+        /// <returns>The QR content.</returns>
+        public string GetQrContent()
+        {
+            if (Version == 1 && Bic == null)
+                throw new InvalidOperationException("BIC is required for version 1");
+
+            if (Name == null)
+                throw new InvalidOperationException($"{nameof(Name)} is required");
+
+            if (AccountNumber == null)
+                throw new InvalidOperationException($"{nameof(AccountNumber)} is required");
+
+            if (Amount == 0)
+                throw new InvalidOperationException($"{nameof(Amount)} is requried");
+
+            if (StructuredRemittanceInformation != null && UnstructuredRemittanceInformation != null)
+                throw new InvalidOperationException($"Only {nameof(StructuredRemittanceInformation)} or {nameof(UnstructuredRemittanceInformation)} can be set, not both");
+
+            var content = new StringBuilder();
+            content.AppendLine(ServiceTag);
+            content.AppendLine($"{Version:D3}");
+            content.AppendLine($"{(char)CharacterSet}");
+            content.AppendLine(IdentificationCode);
+            content.AppendLine(Bic ?? string.Empty);
+            content.AppendLine(Name);
+            content.AppendLine(AccountNumber);
+            content.AppendLine($"EUR{Amount.ToString("0.00", CultureInfo.InvariantCulture)}");
+            content.AppendLine(Purpose ?? string.Empty);
+            content.AppendLine(StructuredRemittanceInformation ?? string.Empty);
+            content.AppendLine(UnstructuredRemittanceInformation ?? string.Empty);
+            content.AppendLine(Information ?? string.Empty);
+            return content.ToString().Replace(Environment.NewLine, "\n");
         }
     }
 }
