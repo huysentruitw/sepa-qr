@@ -7,7 +7,7 @@ namespace SepaQr
         /// <summary>
         /// Gets the service tag.
         /// </summary>
-        public const string ServiceTag = SepaQrCodeDefaults.DefaultServiceTag;
+        public readonly string ServiceTag = SepaQrCodeDefaults.DefaultServiceTag;
 
         /// <summary>
         /// Gets the version.
@@ -17,12 +17,12 @@ namespace SepaQr
         /// <summary>
         /// Gets the character set.
         /// </summary>
-        public const CharacterSet CharacterSet = SepaQrCodeDefaults.DefaultCharacterSet;
+        public readonly CharacterSet CharacterSet = SepaQrCodeDefaults.DefaultCharacterSet;
 
         /// <summary>
         /// Gets the identification code.
         /// </summary>
-        public const string IdentificationCode = SepaQrCodeDefaults.DefaultIdentificationCode;
+        public readonly string IdentificationCode = SepaQrCodeDefaults.DefaultIdentificationCode;
 
         /// <summary>
         /// Gets the BIC of the beneficiary bank.
@@ -85,7 +85,7 @@ namespace SepaQr
         public SepaQrCode SetBic(string bic)
         {
             bic = bic?.Trim() ?? throw new ArgumentNullException(nameof(bic));
-            if (bic.Length != 8 || bic.Length != 11)
+            if (bic.Length != 8 && bic.Length != 11)
                 throw new ArgumentOutOfRangeException(nameof(bic), "The value should have a length of 8 or 11");
             Bic = bic;
             return this;
@@ -208,7 +208,7 @@ namespace SepaQr
         /// Clears the unstructured remittance information.
         /// </summary>
         /// <returns>The <see cref="SepaQrCode"/> instance.</returns>
-        public SepaQrCode ClearSetUnstructuredRemittanceInformation()
+        public SepaQrCode ClearUnstructuredRemittanceInformation()
         {
             UnstructuredRemittanceInformation = null;
             return this;
